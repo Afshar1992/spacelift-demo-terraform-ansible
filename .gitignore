@@ -1,0 +1,14 @@
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.tfvars
+
+# Large binaries (just in case)
+*.exe
+*.dll
+
+# IDE files
+.vscode/
+.idea/
