@@ -7,6 +7,11 @@ terraform {
   }
 }
 
+variable "key_name" {
+  description = "Name of the existing AWS key pair to use for instance access"
+  type        = string
+}
+
 provider "aws" {
   region = "eu-central-1"
 }
@@ -52,9 +57,8 @@ locals {
   }
 }
 
-resource "aws_key_pair" "ssh_key" {
-  key_name   = "ansib_key2"
-  public_key = file(var.public_key)
+data "aws_key_pair" "ssh_key" {
+  key_name = var.key_name
 }
 
 
