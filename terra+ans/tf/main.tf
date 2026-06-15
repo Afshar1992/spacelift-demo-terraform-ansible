@@ -7,10 +7,6 @@ terraform {
   }
 }
 
-variable "key_name" {
-  description = "Name of the existing AWS key pair to use for instance access"
-  type        = string
-}
 
 provider "aws" {
   region = "eu-central-1"
@@ -66,7 +62,7 @@ resource "aws_instance" "this" {
   for_each                    = local.instances
   ami                         = each.value.ami
   instance_type               = each.value.instance_type
-  key_name                    = "ansib_key2"
+  key_name                    = var.key_name
   associate_public_ip_address = true
 
   tags = {

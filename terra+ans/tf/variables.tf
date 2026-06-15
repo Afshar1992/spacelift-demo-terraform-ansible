@@ -1,4 +1,5 @@
-variable "public_key" {
-  type    = string
-  default = "/mnt/workspace/ansib_key2.pem.pub"
+variable "key_name" {
+  description = "Name of the existing AWS key pair to use for instance access"
+  type        = string
+  default     = "ansib_key2"
 }
