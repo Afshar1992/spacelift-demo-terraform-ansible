@@ -43,10 +43,11 @@ locals {
   }
 }
 
-resource "aws_key_pair" "ssh_key" {
-  key_name   = "ec2"
-  public_key = file(var.public_key)
+data "aws_key_pair" "existing" {
+  key_name = "ansib_key2"
 }
+
+# Then use data.aws_key_pair.existing wherever you need the key.
 
 resource "aws_instance" "this" {
   for_each                    = local.instances
