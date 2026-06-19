@@ -19,7 +19,12 @@ data "aws_ami" "ubuntu" {
     name   = "architecture"
     values = ["x86_64"]
   }
-  owners = ["099720109477"] #canonical
+  owners = ["099720109477"] # Canonical
+}
+
+# Fetch the existing key pair (no creation attempt)
+data "aws_key_pair" "existing" {
+  key_name = "ansib_key2"
 }
 
 locals {
@@ -43,17 +48,11 @@ locals {
   }
 }
 
-data "aws_key_pair" "existing" {
-  key_name = "ansib_key2"
-}
-
-# Then use data.aws_key_pair.existing wherever you need the key.
-
 resource "aws_instance" "this" {
   for_each                    = local.instances
   ami                         = each.value.ami
   instance_type               = each.value.instance_type
-  key_name                    = aws_key_pair.ssh_key.key_name
+  key_name                    = data.aws_key_pair.existing.key_name   # use existing key
   associate_public_ip_address = true
 
   tags = {
