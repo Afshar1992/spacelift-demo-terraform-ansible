@@ -1,13 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-
 provider "aws" {
   region = "eu-central-1"
 }
@@ -53,16 +43,16 @@ locals {
   }
 }
 
-data "aws_key_pair" "ssh_key" {
-  key_name = var.key_name
+resource "aws_key_pair" "ssh_key" {
+  key_name   = "ec2"
+  public_key = file(var.public_key)
 }
-
 
 resource "aws_instance" "this" {
   for_each                    = local.instances
   ami                         = each.value.ami
   instance_type               = each.value.instance_type
-  key_name                    = var.key_name
+  key_name                    = aws_key_pair.ssh_key.key_name
   associate_public_ip_address = true
 
   tags = {
